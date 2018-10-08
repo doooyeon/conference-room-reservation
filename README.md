@@ -1,1 +1,1 @@
-# conference-room-reservation
+# conference-room-reservation [![Build Status](https://travis-ci.org/doooyeon/conference-room-reservation.svg?branch=master)](https://travis-ci.org/doooyeon/conference-room-reservation)
