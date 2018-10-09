@@ -1,10 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/bootstrap-datetimepicker.css">
+    <link rel="stylesheet" href="/css/home.css">
 </head>
 <body>
-    <h1>Home</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <h1>Conference Room Reservation</h1>
+            <form>
+                <!--회의실-->
+                <div class="form-group">
+                    <label for="room-name">회의실</label>
+                    <select class="form-control" id="room-name">
+                        <option value="A">회의실A</option>
+                        <option value="B">회의실B</option>
+                        <option value="C">회의실C</option>
+                        <option value="D">회의실D</option>
+                        <option value="E">회의실E</option>
+                        <option value="F">회의실F</option>
+                        <option value="G">회의실G</option>
+                        <option value="H">회의실H</option>
+                        <option value="I">회의실I</option>
+                        <option value="J">회의실J</option>
+                    </select>
+                </div>
+
+                <!--예약자명-->
+                <div class="form-group">
+                    <label for="reserved-name">예약자명</label>
+                    <input type="text" class="form-control" id="reserved-name" required>
+                </div>
+
+                <!--예약일자-->
+                <div class="form-group">
+                    <label for="datepicker">예약일자</label>
+                    <div class="input-group date" id="datepicker">
+                        <input type="text" class="form-control" id="date" required>
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+
+                <!--예약시간-->
+                <div class="form-group">
+                    <label>예약시간</label>
+                    <div class="form-inline">
+                        <div class='col-sm-5 input-group date timepicker'>
+                            <input type='text' class="form-control" id="start-time" required/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                        <span> ~ </span>
+                        <div class='col-sm-5 input-group date timepicker'>
+                            <input type='text' class="form-control" id="end-time" required/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkbox">
+                    <label><input type="checkbox" id="recursion-check" value=""> 반복하기</label>
+                </div>
+
+                <!--반복횟수-->
+                <div class="form-group" id="recursion">
+                    <label for="num-of-recursion">반복횟수</label>
+                    <input type="number" class="form-control" id="num-of-recursion" min="1">
+                </div>
+
+                <!--예약하기-->
+                <button type="submit" class="btn btn-primary center-block" id="reserve-btn">예약하기</button>
+            </form>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+</div>
+
+<script src="/js/lib/jquery.min.js"></script>
+<script src="/js/lib/bootstrap.min.js"></script>
+<script src="/js/lib/moment.js"></script>
+<script src="/js/lib/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/util.js" ></script>
+<script src="/js/home.js" ></script>
 </body>
 </html>
