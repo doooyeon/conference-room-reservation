@@ -34,14 +34,14 @@
                 <!--예약자명-->
                 <div class="form-group">
                     <label for="reserved-name">예약자명</label>
-                    <input type="text" class="form-control" id="reserved-name" required>
+                    <input type="text" class="form-control" id="reserved-name" placeholder="2~10자" required>
                 </div>
 
                 <!--예약일자-->
                 <div class="form-group">
                     <label for="datepicker">예약일자</label>
                     <div class="input-group date" id="datepicker">
-                        <input type="text" class="form-control" id="date" required>
+                        <input type="text" class="form-control" id="date" placeholder="yyyy-mm-dd" required>
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -53,14 +53,14 @@
                     <label>예약시간</label>
                     <div class="form-inline">
                         <div class='col-sm-5 input-group date timepicker'>
-                            <input type='text' class="form-control" id="start-time" required/>
+                            <input type='text' class="form-control" id="start-time" placeholder="09:00~20:00 (30분 단위)" required/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
                             </span>
                         </div>
                         <span> ~ </span>
                         <div class='col-sm-5 input-group date timepicker'>
-                            <input type='text' class="form-control" id="end-time" required/>
+                            <input type='text' class="form-control" id="end-time" placeholder="09:00~20:00 (30분 단위)" required/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-time"></span>
                             </span>
@@ -75,14 +75,17 @@
                 <!--반복횟수-->
                 <div class="form-group" id="recursion">
                     <label for="num-of-recursion">반복횟수</label>
-                    <input type="number" class="form-control" id="num-of-recursion" min="1">
+                    <input type="number" class="form-control" id="num-of-recursion" min="1" placeholder="1~10">
                 </div>
 
-                <!--예약하기-->
-                <button type="button" class="btn btn-primary center-block" id="reserve-btn">예약하기</button>
-
-                <!--예약조회-->
-                <button type="button" class="btn btn-primary center-block" onclick="window.location.href='/reservation'">예약조회</button>
+                <div class="form-group">
+                    <div class="form-inline">
+                        <!--예약하기-->
+                        <button type="button" class="btn btn-primary" id="reserve-btn">예약하기</button>
+                        <!--예약조회-->
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='/reservation'">예약조회</button>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-sm-3"></div>
