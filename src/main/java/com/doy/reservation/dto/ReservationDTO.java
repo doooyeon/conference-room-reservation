@@ -46,6 +46,10 @@ public class ReservationDTO {
         this.endTime = endTime;
     }
 
+    public ReservationDTO(String roomName, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        this(roomName, "doy", date, startTime, endTime);
+    }
+
     public Reservation toEntity() {
         return new Reservation(roomName, reservedName, date, startTime, endTime);
     }

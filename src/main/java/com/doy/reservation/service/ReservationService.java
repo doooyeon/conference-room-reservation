@@ -17,7 +17,7 @@ public class ReservationService {
 
     public void save(ReservationDTO reservationDTO) {
         checkDuplicate(reservationDTO);
-        
+
         for (int i = 0; i <= reservationDTO.getNumOfRecursion(); i++) {
             reservationDTO.setDate(reservationDTO.getDate().plusWeeks(i));
             reservationRepository.save(reservationDTO.toEntity());
