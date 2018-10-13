@@ -17,4 +17,10 @@ public abstract class AcceptanceTest {
     public TestRestTemplate template() {
         return template;
     }
+
+    protected <T> ResponseEntity<T> getForEntityWithParameterized(String url, Object body, ParameterizedTypeReference<T> reference) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        return template().exchange(url, HttpMethod.GET, new HttpEntity<>(body, headers), reference);
+    }
 }

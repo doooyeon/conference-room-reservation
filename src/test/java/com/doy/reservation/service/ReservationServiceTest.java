@@ -45,4 +45,22 @@ public class ReservationServiceTest {
         when(reservationRepository.findByDateAndRoomName(reservationDTO.getDate(), reservationDTO.getRoomName())).thenReturn(reservations);
         reservationService.save(reservationDTO);
     }
+
+    @Test
+    public void getReservationDTOsByDate() {
+        ReservationDTO reservationDTO1 = ReservationDTO.defaultReservationADto();
+        ReservationDTO reservationDTO2 = ReservationDTO.defaultReservationBDto();
+
+        List<Reservation> reservations = new ArrayList<>();
+        reservations.add(reservationDTO1.toEntity());
+        reservations.add(reservationDTO2.toEntity());
+
+        when(reservationRepository.findByDate(reservationDTO1.getDate())).thenReturn(reservations);
+
+        List<ReservationResponseDTO> reservationDTOs = new ArrayList<>();
+        for (Reservation r : reservations) {
+            reservationDTOs.add(new ReservationResponseDTO(r.getId(), r.getRoomName(), r.getReservedName(), r.getStartTime(), r.getEndTime()));
+        }
+        assertThat(reservationService.getReservationDTOsByDate(reservationDTO1.getDate())).isEqualTo(reservationDTOs);
+    }
 }
