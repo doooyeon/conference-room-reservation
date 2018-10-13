@@ -28,7 +28,7 @@ function createTable() {
 
     let startHour = 9;
     const min = ['00', '30'];
-    while (startHour < 21) {
+    while (startHour < 20) {
         for (let i = 0; i < 2; i++) {
             table += '<tr>';
             table += '<td>' + startHour + ':' + min[i] + '</td>';
@@ -36,7 +36,6 @@ function createTable() {
                 table += '<td></td>';
             }
             table += '</tr>';
-            if (startHour === 20) break;
         }
         startHour++;
     }
@@ -75,9 +74,7 @@ function updateView() {
 function createReservationBox(id, room, reservedName, startTime, endTime) {
     const thRect = $('#room' + room)[0].getBoundingClientRect();
     const tdRect = $('td')[0].getBoundingClientRect();
-    const div = '<div class="reservations-area-parent">' +
-        '<div class="reservations-area" id="reservation' + id + '">' + reservedName + '</div>' +
-        '</div>';
+    const div = '<div class="reservations-area" id="reservation' + id + '"><h6>' + reservedName + '</h6></div>';
     $('#show-reservation').append(div);
 
     let startTimeSplit = startTime.split(':');
@@ -94,7 +91,9 @@ function createReservationBox(id, room, reservedName, startTime, endTime) {
         "left": thRect.left + 1,
         "height": tdRect.height * getHeightPosition(startHour, startMn, endHour, endMn) - 1,
         "width": thRect.width - 1,
-        "backgroundColor": "pink"
+        "text-align": "center",
+        "color": "white",
+        "backgroundColor": getRandomBackgroundColor()
     });
 }
 
@@ -119,6 +118,14 @@ function getHeightPosition(startHour, startMn, endHour, endMn) {
     }
 
     return position;
+}
+
+function getRandomBackgroundColor() {
+    let x = Math.floor(Math.random() * 256);
+    let y = Math.floor(Math.random() * 256);
+    let z = Math.floor(Math.random() * 256);
+
+    return 'rgb(' + x + ',' + y + ',' + z + ')';
 }
 
 $(document).ready(function () {
