@@ -49,4 +49,12 @@ public class ReservationDTO {
     public Reservation toEntity() {
         return new Reservation(roomName, reservedName, date, startTime, endTime);
     }
+
+    public static ReservationDTO defaultReservationADto() {
+        return new ReservationDTO("A", "doy", LocalDate.now(), LocalTime.of(10, 30), LocalTime.of(12, 0));
+    }
+
+    public static ReservationDTO defaultReservationBDto() {
+        return new ReservationDTO("A", "doy2", LocalDate.now(), LocalTime.of(15, 30), LocalTime.of(19, 0), 2);
+    }
 }
