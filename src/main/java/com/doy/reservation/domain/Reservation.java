@@ -1,5 +1,6 @@
 package com.doy.reservation.domain;
 
+import com.doy.reservation.dto.ReservationDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,5 +41,13 @@ public class Reservation {
 
     public Reservation(String roomName, LocalDate date, LocalTime startTime, LocalTime endTime) {
         this(roomName, "doy", date, startTime, endTime);
+    }
+
+    public boolean isDuplicate(ReservationDTO reservationDTO) {
+        if (startTime.isAfter(reservationDTO.getEndTime()) || startTime.compareTo(reservationDTO.getEndTime()) == 0)
+            return false;
+        if (endTime.isBefore(reservationDTO.getStartTime()) || endTime.compareTo(reservationDTO.getStartTime()) == 0)
+            return false;
+        return true;
     }
 }
