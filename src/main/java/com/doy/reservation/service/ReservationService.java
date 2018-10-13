@@ -2,11 +2,14 @@ package com.doy.reservation.service;
 
 import com.doy.reservation.domain.Reservation;
 import com.doy.reservation.dto.ReservationDTO;
+import com.doy.reservation.dto.ReservationResponseDTO;
 import com.doy.reservation.exception.ReservationDuplicateException;
 import com.doy.reservation.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,5 +38,14 @@ public class ReservationService {
                 }
             }
         }
+    }
+
+    public List<ReservationResponseDTO> getReservationDTOsByDate(LocalDate date) {
+        List<Reservation> reservations = reservationRepository.findByDate(date);
+        List<ReservationResponseDTO> reservationDTOs = new ArrayList<>();
+        for (Reservation r : reservations) {
+            reservationDTOs.add(new ReservationResponseDTO(r.getId(), r.getRoomName(), r.getReservedName(), r.getStartTime(), r.getEndTime()));
+        }
+        return reservationDTOs;
     }
 }
