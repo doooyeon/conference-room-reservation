@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -49,5 +50,18 @@ public class Reservation {
         if (endTime.isBefore(reservationDTO.getStartTime()) || endTime.compareTo(reservationDTO.getStartTime()) == 0)
             return false;
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(roomName, that.roomName) &&
+                Objects.equals(reservedName, that.reservedName) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(startTime, that.startTime) &&
+                Objects.equals(endTime, that.endTime);
     }
 }

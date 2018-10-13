@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -27,12 +29,11 @@ public class ReservationServiceTest {
 
     @Test
     public void saveReservationSuccessTest() {
-        ReservationDTO reservationDTO = ReservationDTO.defaultReservationADto();
-        Reservation reservation = reservationDTO.toEntity();
+        ReservationDTO reservationDTO = ReservationDTO.defaultReservationBDto();
         reservationService.save(reservationDTO);
 
-//        when(reservationRepository.save(reservation)).thenReturn(reservation);
-//        assertThat(reservationService.save(reservationDTO)).isEqualTo(reservation);
+        Reservation reservation = reservationDTO.toEntity();
+        verify(reservationRepository).save(reservation);
     }
 
 

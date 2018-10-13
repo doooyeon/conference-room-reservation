@@ -44,6 +44,7 @@ public class ReservationDTO {
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.numOfRecursion = 1;
     }
 
     public ReservationDTO(String roomName, LocalDate date, LocalTime startTime, LocalTime endTime) {
@@ -55,7 +56,7 @@ public class ReservationDTO {
     }
 
     public static ReservationDTO defaultReservationADto() {
-        return new ReservationDTO("A", "doy", LocalDate.now(), LocalTime.of(10, 30), LocalTime.of(12, 0));
+        return new ReservationDTO("A", "doy", LocalDate.now(), LocalTime.of(10, 30), LocalTime.of(12, 0), 1);
     }
 
     public static ReservationDTO defaultReservationBDto() {
