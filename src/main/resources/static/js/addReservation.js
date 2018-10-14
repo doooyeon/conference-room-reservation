@@ -57,9 +57,9 @@ function checkTimeRange() {
 }
 
 function addReservation() {
-    // if (!checkTimeRange()) {
-    //     return;
-    // }
+    if (!checkTimeRange()) {
+        return;
+    }
     $('#time-validation').html('');
 
     let numOfRecursion = 1;
@@ -95,6 +95,7 @@ function addReservationFailCallback(response) {
         if (status === 403) {
             // 이미 예약된 경우
             $('#time-validation').html(response.errorMessage);
+            $('#time-validation').show();
         } else if (status === 400) {
             // 입력 유효성 오류
             response.errors.forEach((error) => {
