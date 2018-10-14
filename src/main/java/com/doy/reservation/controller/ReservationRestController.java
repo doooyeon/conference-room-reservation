@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 
@@ -18,7 +19,7 @@ public class ReservationRestController {
     private ReservationService reservationService;
 
     @PostMapping
-    public ResponseEntity reserve(@RequestBody ReservationDTO reservationDTO) {
+    public ResponseEntity reserve(@Valid @RequestBody ReservationDTO reservationDTO) {
         reservationService.save(reservationDTO);
         return new ResponseEntity(HttpStatus.CREATED);
     }
