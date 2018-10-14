@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class ValidationErrorsResponse extends RestStatus {
+public class ValidationErrorsResponse {
     private List<ValidationError> errors;
 
     public ValidationErrorsResponse() {
-        super(false);
         errors = new ArrayList<>();
     }
 

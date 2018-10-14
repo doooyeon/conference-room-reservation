@@ -5,7 +5,7 @@
 ---
 
 ## Project Build & Run
-- 방법 1. gradle build & jar run ([java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), [git](https://git-scm.com/downloads), [gradle](https://gradle.org/install/) 사전 설치)
+- **방법 1. gradle build & jar run** ([java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), [git](https://git-scm.com/downloads), [gradle](https://gradle.org/install/) 사전 설치)
     1. project clone
     ```
     ~$ git clone https://github.com/doooyeon/conference-room-reservation.git
@@ -24,8 +24,20 @@
     ```
     5. 웹 브라우저에서 http://localhost:8080/ 접속
 
-- 방법 2. URL 접속 (AWS EC2)
+- **방법 2. URL 접속** (AWS EC2)
     - [Conference Room Reservation Service](http://ec2-52-79-232-70.ap-northeast-2.compute.amazonaws.com:8080/)
+
+---
+
+## REST API
+- **예약하기**
+    - **POST /reservation**
+        - OK : 예약 성공
+        - BAD_REQUEST : 입력 오류
+        - FORBIDDEN : 예약 중복
+- **예약조회**
+    - **GET /reservation/{date}**
+        - OK : 해당 날짜 예약 조회 성공
 
 ---
 
