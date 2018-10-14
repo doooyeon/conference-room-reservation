@@ -57,9 +57,9 @@ function checkTimeRange() {
 }
 
 function addReservation() {
-    if (!checkTimeRange()) {
-        return;
-    }
+    // if (!checkTimeRange()) {
+    //     return;
+    // }
     $('#time-validation').html('');
 
     let numOfRecursion = 1;
@@ -89,6 +89,7 @@ function addReservationSuccessCallback() {
 }
 
 function addReservationFailCallback(response) {
+    $('.caution').hide();
     const status = response.status;
     response.json().then((response) => {
         if (status === 403) {
@@ -97,6 +98,9 @@ function addReservationFailCallback(response) {
         } else if (status === 400) {
             // 입력 유효성 오류
             response.errors.forEach((error) => {
+                const validationCaution = $(`#${error.fieldName}-validation`);
+                validationCaution.show();
+                validationCaution.html(error.errorMessage);
             });
         }
     });

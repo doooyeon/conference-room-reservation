@@ -29,12 +29,14 @@
                         <option value="I">회의실I</option>
                         <option value="J">회의실J</option>
                     </select>
+                    <small id="roomName-validation" class="caution"></small>
                 </div>
 
                 <!--예약자명-->
                 <div class="form-group">
                     <label for="reserved-name">예약자명</label>
                     <input type="text" class="form-control" id="reserved-name" minlength="2" maxlength="10" placeholder="2~10자" required>
+                    <small id="reservedName-validation" class="caution"></small>
                 </div>
 
                 <!--예약일자-->
@@ -47,6 +49,7 @@
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
+                    <small id="date-validation" class="caution"></small>
                 </div>
 
                 <!--예약시간-->
@@ -74,6 +77,7 @@
                 <div class="form-group" id="recursion-section">
                     <label for="num-of-recursion">반복횟수</label>
                     <input type="number" class="form-control" id="num-of-recursion" min="2" max="10" placeholder="2~10">
+                    <small id="numOfRecursion-validation" class="caution"></small>
                 </div>
 
                 <div class="form-group">
