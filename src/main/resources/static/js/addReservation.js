@@ -46,7 +46,7 @@ function checkTimeRange() {
     }
 
     if (!(startHour < endHour || startHour === endHour && startMn < endMn)) {
-        $('#time-validation').html('종료 시간은 시작 시간 이후이어야 합니다.');
+        $('#time-validation').html('종료시간은 시작시간 이후이어야 합니다.');
         return false;
     }
 

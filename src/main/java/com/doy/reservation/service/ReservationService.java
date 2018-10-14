@@ -18,7 +18,7 @@ public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
-    public void save(ReservationDTO reservationDTO) {
+    synchronized public void save(ReservationDTO reservationDTO) {
         checkDuplicate(reservationDTO);
 
         for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
