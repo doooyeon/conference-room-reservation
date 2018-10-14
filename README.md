@@ -5,7 +5,7 @@
 ---
 
 ## Project Build & Run
-- 방법 1. gradle build, jar (git, gradel, java 사전 설치)
+- 방법 1. gradle build & jar run ([java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), [git](https://git-scm.com/downloads), [gradle](https://gradle.org/install/) 사전 설치)
     1. project clone
     ```
     ~$ git clone https://github.com/doooyeon/conference-room-reservation.git
