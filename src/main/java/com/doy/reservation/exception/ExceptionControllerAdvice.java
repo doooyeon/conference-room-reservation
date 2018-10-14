@@ -16,7 +16,7 @@ public class ExceptionControllerAdvice {
     @ExceptionHandler(ReservationDuplicateException.class)
     public ResponseEntity reservationDuplicated(ReservationDuplicateException exception) {
         log.debug("ReservationDuplicateException is happened!");
-        ErrorDetails errorDetails = new ErrorDetails(new Date(), exception.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDetails);
+        ExceptionErrorResponse exceptionErrorResponse = new ExceptionErrorResponse(new Date(), exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionErrorResponse);
     }
 }

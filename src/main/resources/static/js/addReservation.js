@@ -93,7 +93,7 @@ function addReservationFailCallback(response) {
     response.json().then((response) => {
         if (status === 403) {
             // 이미 예약된 경우
-            $('#time-validation').html(response.message);
+            $('#time-validation').html(response.errorMessage);
         } else if (status === 400) {
             // 입력 유효성 오류
             response.errors.forEach((error) => {

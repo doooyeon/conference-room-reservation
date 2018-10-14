@@ -2,7 +2,7 @@ package com.doy.reservation.controller;
 
 import com.doy.reservation.dto.ReservationDTO;
 import com.doy.reservation.dto.ReservationResponseDTO;
-import com.doy.reservation.exception.ErrorDetails;
+import com.doy.reservation.exception.ExceptionErrorResponse;
 import org.junit.Test;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
@@ -40,11 +40,11 @@ public class ReservationRestAcceptanceTest extends AcceptanceTest{
         // when
         ReservationDTO reservation = ReservationDTO.defaultReservationADto();
         template().postForEntity(RESERVE_URL, reservation, Void.class);
-        ResponseEntity<ErrorDetails> response = template().postForEntity(RESERVE_URL, reservation, ErrorDetails.class);
+        ResponseEntity<ExceptionErrorResponse> response = template().postForEntity(RESERVE_URL, reservation, ExceptionErrorResponse.class);
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-        assertThat(response.getBody().getMessage()).isEqualTo("이미 예약된 시간입니다.");
+        assertThat(response.getBody().getErrorMessage()).isEqualTo("이미 예약된 시간입니다.");
     }
 
     @Test
