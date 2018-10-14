@@ -3,7 +3,10 @@ package com.doy.reservation.controller;
 import com.doy.reservation.dto.ReservationDTO;
 import com.doy.reservation.dto.ReservationResponseDTO;
 import com.doy.reservation.exception.ExceptionErrorResponse;
+import com.doy.reservation.validation.ValidationErrorsResponse;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +15,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ReservationRestAcceptanceTest extends AcceptanceTest{
+public class ReservationRestAcceptanceTest extends AcceptanceTest {
+    @Autowired
+    private MessageSourceAccessor msa;
+
     private static final String RESERVE_URL = "/reservations";
 
     @Test
@@ -36,6 +42,18 @@ public class ReservationRestAcceptanceTest extends AcceptanceTest{
     }
 
     @Test
+    public void reserveFailWithEmptyReservedNameTest() {
+        // when
+        ReservationDTO reservation = ReservationDTO.defaultReservationADto();
+        reservation.setReservedName("");
+        ResponseEntity<ValidationErrorsResponse> response = template().postForEntity(RESERVE_URL, reservation, ValidationErrorsResponse.class);
+
+        // then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().getErrors().get(0).getErrorMessage()).isEqualTo(msa.getMessage("NotBlank.reservationDTO.reservedName"));
+    }
+
+    @Test
     public void reserveFailTest() {
         // when
         ReservationDTO reservation = ReservationDTO.defaultReservationADto();
@@ -44,7 +62,7 @@ public class ReservationRestAcceptanceTest extends AcceptanceTest{
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.FORBIDDEN);
-        assertThat(response.getBody().getErrorMessage()).isEqualTo("이미 예약된 시간입니다.");
+        assertThat(response.getBody().getErrorMessage()).isEqualTo(msa.getMessage("reservation.duplicate.message"));
     }
 
     @Test
@@ -53,7 +71,8 @@ public class ReservationRestAcceptanceTest extends AcceptanceTest{
         ReservationDTO reservation = ReservationDTO.defaultReservationADto();
         template().postForEntity(RESERVE_URL, reservation, Void.class);
         ResponseEntity<List<ReservationResponseDTO>> response =
-                getForEntityWithParameterized(RESERVE_URL + "/" + reservation.getDate(), null, new ParameterizedTypeReference<List<ReservationResponseDTO>>() {});
+                getForEntityWithParameterized(RESERVE_URL + "/" + reservation.getDate(), null, new ParameterizedTypeReference<List<ReservationResponseDTO>>() {
+                });
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -71,9 +90,11 @@ public class ReservationRestAcceptanceTest extends AcceptanceTest{
         reservation.setDate(reservation.getDate().plusDays(2));
         template().postForEntity(RESERVE_URL, reservation, Void.class);
         ResponseEntity<List<ReservationResponseDTO>> response1 =
-                getForEntityWithParameterized(RESERVE_URL + "/" + reservation.getDate(), null, new ParameterizedTypeReference<List<ReservationResponseDTO>>() {});
+                getForEntityWithParameterized(RESERVE_URL + "/" + reservation.getDate(), null, new ParameterizedTypeReference<List<ReservationResponseDTO>>() {
+                });
         ResponseEntity<List<ReservationResponseDTO>> response2 =
-                getForEntityWithParameterized(RESERVE_URL + "/" + reservation.getDate().plusWeeks(1), null, new ParameterizedTypeReference<List<ReservationResponseDTO>>() {});
+                getForEntityWithParameterized(RESERVE_URL + "/" + reservation.getDate().plusWeeks(1), null, new ParameterizedTypeReference<List<ReservationResponseDTO>>() {
+                });
 
         // then
         assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);

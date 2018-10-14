@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.context.support.MessageSourceAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,9 @@ import static org.mockito.Mockito.when;
 public class ReservationServiceTest {
     @Mock
     private ReservationRepository reservationRepository;
+
+    @Mock
+    private MessageSourceAccessor msa;
 
     @InjectMocks
     private ReservationService reservationService;

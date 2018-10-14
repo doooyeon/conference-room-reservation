@@ -6,6 +6,7 @@ import com.doy.reservation.dto.ReservationResponseDTO;
 import com.doy.reservation.exception.ReservationDuplicateException;
 import com.doy.reservation.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -17,6 +18,9 @@ import java.util.List;
 public class ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private MessageSourceAccessor msa;
 
     synchronized public void save(ReservationDTO reservationDTO) {
         checkDuplicate(reservationDTO);
@@ -34,7 +38,7 @@ public class ReservationService {
 
             for (Reservation reservation : reservations) {
                 if (reservation.isDuplicate(dto)) {
-                    throw new ReservationDuplicateException("이미 예약된 시간입니다.");
+                    throw new ReservationDuplicateException(msa.getMessage("reservation.duplicate.message"));
                 }
             }
         }
