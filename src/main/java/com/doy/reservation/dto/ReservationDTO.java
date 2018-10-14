@@ -3,6 +3,7 @@ package com.doy.reservation.dto;
 import com.doy.reservation.domain.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ReservationDTO {
     @NotBlank
     @Size(min = 1, max = 1)
