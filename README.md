@@ -31,7 +31,7 @@
     5. 웹 브라우저에서 http://localhost:8080/ 접속
 
 - **방법 2. URL 접속** (AWS EC2)
-    - [Conference Room Reservation Service](http://ec2-52-79-232-70.ap-northeast-2.compute.amazonaws.com:8080/)
+    - [Conference Room Reservation Service](http://ec2-13-125-36-49.ap-northeast-2.compute.amazonaws.com:8080/)
 
 ---
 
