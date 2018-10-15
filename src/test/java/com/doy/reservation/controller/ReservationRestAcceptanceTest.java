@@ -50,7 +50,7 @@ public class ReservationRestAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-        assertThat(response.getBody().getErrors().get(0).getErrorMessage()).isEqualTo(msa.getMessage("NotBlank.reservationDTO.reservedName"));
+        assertThat(response.getBody().getErrors().size()).isEqualTo(2);
     }
 
     @Test
