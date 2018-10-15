@@ -5,7 +5,13 @@
 ---
 
 ## Project Build & Run
-- **방법 1. gradle build & jar run** ([java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html), [git](https://git-scm.com/downloads), [gradle](https://gradle.org/install/) 사전 설치)
+- **Pre-Requirements**
+    - [java](https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+    - [git](https://git-scm.com/downloads)
+    - [gradle](https://gradle.org/install/)
+
+
+- **방법 1. gradle build & jar run**
     1. project clone
     ```
     ~$ git clone https://github.com/doooyeon/conference-room-reservation.git
@@ -31,12 +37,16 @@
 
 ## REST API
 - **예약하기**
-    - **POST /reservation**
+    - Request
+        - **POST /reservation**
+    - Response
         - OK : 예약 성공
         - BAD_REQUEST : 입력 오류
         - FORBIDDEN : 예약 중복
 - **예약조회**
-    - **GET /reservation/{date}**
+    - Request
+        - **GET /reservation/{date}**    
+    - Response
         - OK : 해당 날짜 예약 조회 성공
 
 ---
@@ -62,6 +72,25 @@
     - 조회할 일자 선택하여 예약조회
         - 조회일자 : yyyy-mm-dd
     - 예약 시작시간과 종료시간 사이에 예약자명 출력
+
+---
+
+## Troubleshooting Strategies
+- **반복 예약**
+    - 사용자가 입력한 반복횟수만큼 DB에 저장
+    - `LocalDate plusWeeks(long weeksToAdd)` 메서드를 이용해 다음 주 날짜 세팅
+- **예약 중복 체크**
+    - 사용자가 입력한 예약일자와 회의실에 해당하는 예약 리스트를 DB에서 읽어옴
+    - 그 리스트만큼 순회하며 중복 체크
+        - 중복이 되지 않는 경우의 수
+            - 예약리스트 시작 시간 >= 예약하려는 종료 시간
+            - 예약리스트 종료 시간 <= 예약하려는 시작 시간
+        - 중복이 되는 경우의 수
+            - 위 조건 외의 경우
+- **동기 처리**
+    - 예약 저장 메서드 `synchronized` 처리
+- **캐싱**
+    - 예약 조회 값이 변경되지 않았으면 DB 
 
 ---
 
