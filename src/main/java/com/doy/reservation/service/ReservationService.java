@@ -6,8 +6,10 @@ import com.doy.reservation.dto.ReservationResponseDTO;
 import com.doy.reservation.exception.ReservationDuplicateException;
 import com.doy.reservation.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class ReservationService {
     @Autowired
     private MessageSourceAccessor msa;
 
+    @Transactional
     synchronized public void save(ReservationDTO reservationDTO) {
         checkDuplicate(reservationDTO);
 
@@ -44,6 +47,7 @@ public class ReservationService {
         }
     }
 
+    @Cacheable("reservations")
     public List<ReservationResponseDTO> getReservationDTOsByDate(LocalDate date) {
         List<Reservation> reservations = reservationRepository.findByDate(date);
         List<ReservationResponseDTO> reservationDTOs = new ArrayList<>();
