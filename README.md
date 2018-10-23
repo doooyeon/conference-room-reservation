@@ -38,14 +38,14 @@
 ## REST API
 - **예약하기**
     - Request
-        - **POST /reservation**
+        - **POST /reservations**
     - Response
         - OK : 예약 성공
         - BAD_REQUEST : 입력 오류
         - FORBIDDEN : 예약 중복
 - **예약조회**
     - Request
-        - **GET /reservation/{date}**    
+        - **GET /reservations/{date}**    
     - Response
         - OK : 해당 날짜 예약 조회 성공
 
