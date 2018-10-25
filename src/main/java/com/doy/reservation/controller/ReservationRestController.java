@@ -20,12 +20,12 @@ public class ReservationRestController {
 
     @PostMapping
     public ResponseEntity reserve(@Valid @RequestBody ReservationDTO reservationDTO) {
-        reservationService.save(reservationDTO);
+        reservationService.createReservation(reservationDTO);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @GetMapping("/{date}")
     public ResponseEntity getReservation(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
-        return ResponseEntity.ok().body(reservationService.getReservationDTOsByDate(date));
+        return ResponseEntity.ok().body(reservationService.getReservationListByDate(date));
     }
 }

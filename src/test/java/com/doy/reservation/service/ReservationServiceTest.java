@@ -34,43 +34,48 @@ public class ReservationServiceTest {
     @Test
     public void saveReservationSuccessTest() {
         ReservationDTO reservationDTO = ReservationDTO.defaultReservationBDto();
-        reservationService.save(reservationDTO);
+        reservationService.createReservation(reservationDTO);
 
         List<Reservation> reservationList = reservationService.convertToReservationList(reservationDTO);
         verify(reservationRepository).saveAll(reservationList);
     }
 
-
     @Test(expected = ReservationDuplicateException.class)
     public void saveReservationFailTest() {
         ReservationDTO reservationDTO = ReservationDTO.defaultReservationADto();
-        List<LocalDate> dateList = new ArrayList<>();
-        for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
-            dateList.add(reservationDTO.getDate().plusWeeks(i));
-        }
+        List<Reservation> reservations = reservationService.convertToReservationList(reservationDTO);
 
-        List<Reservation> reservations = new ArrayList<>();
-        reservations.add(reservationDTO.toEntity());
-
-        when(reservationRepository.findByDateInAndRoomName(dateList, reservationDTO.getRoomName())).thenReturn(reservations);
-        reservationService.save(reservationDTO);
+        when(reservationRepository.findByDateInAndRoomName(reservationService.getReservationDateList(reservationDTO), reservationDTO.getRoomName())).thenReturn(reservations);
+        reservationService.createReservation(reservationDTO);
     }
 
     @Test
-    public void getReservationDTOsByDate() {
+    public void reservationDuplicateTest() {
         ReservationDTO reservationDTO1 = ReservationDTO.defaultReservationADto();
         ReservationDTO reservationDTO2 = ReservationDTO.defaultReservationBDto();
+        List<Reservation> reservations = reservationService.convertToReservationList(reservationDTO1);
 
-        List<Reservation> reservations = new ArrayList<>();
-        reservations.add(reservationDTO1.toEntity());
-        reservations.add(reservationDTO2.toEntity());
+        when(reservationRepository.findByDateInAndRoomName(reservationService.getReservationDateList(reservationDTO2), reservationDTO2.getRoomName())).thenReturn(reservations);
+        assertThat(reservationService.checkDuplicate(reservationDTO2)).isFalse();
+    }
 
-        when(reservationRepository.findByDate(reservationDTO1.getDate())).thenReturn(reservations);
+    @Test
+    public void reservationNotDuplicateTest() {
+        ReservationDTO reservationDTO = ReservationDTO.defaultReservationADto();
+        List<Reservation> reservations = reservationService.convertToReservationList(reservationDTO);
 
-        List<ReservationResponseDTO> reservationDTOs = new ArrayList<>();
-        for (Reservation r : reservations) {
-            reservationDTOs.add(new ReservationResponseDTO(r.getId(), r.getRoomName(), r.getReservedName(), r.getStartTime(), r.getEndTime()));
-        }
-        assertThat(reservationService.getReservationDTOsByDate(reservationDTO1.getDate())).isEqualTo(reservationDTOs);
+        when(reservationRepository.findByDateInAndRoomName(reservationService.getReservationDateList(reservationDTO), reservationDTO.getRoomName())).thenReturn(reservations);
+        assertThat(reservationService.checkDuplicate(reservationDTO)).isTrue();
+    }
+
+    @Test
+    public void getReservationListByDateTest() {
+        ReservationDTO reservationDTO = ReservationDTO.defaultReservationADto();
+        List<Reservation> reservations = reservationService.convertToReservationList(reservationDTO);
+
+        when(reservationRepository.findByDate(reservationDTO.getDate())).thenReturn(reservations);
+
+        List<ReservationResponseDTO> reservationDTOList = reservationService.convertToReservationDTOList(reservations);
+        assertThat(reservationService.getReservationListByDate(reservationDTO.getDate())).isEqualTo(reservationDTOList);
     }
 }

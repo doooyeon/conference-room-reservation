@@ -23,25 +23,29 @@ public class ReservationService {
     @Autowired
     private MessageSourceAccessor msa;
 
-    @Transactional
-    synchronized public void save(ReservationDTO reservationDTO) {
-        checkDuplicate(reservationDTO);
-        reservationRepository.saveAll(convertToReservationList(reservationDTO));
+    synchronized public void createReservation(ReservationDTO reservationDTO) {
+        if (checkDuplicate(reservationDTO)) {
+            throw new ReservationDuplicateException(msa.getMessage("reservation.duplicate.message"));
+        }
+        saveReservationList(convertToReservationList(reservationDTO));
     }
 
-    public void checkDuplicate(ReservationDTO reservationDTO) {
+    public boolean checkDuplicate(ReservationDTO reservationDTO) {
+        List<Reservation> reservations = reservationRepository.findByDateInAndRoomName(getReservationDateList(reservationDTO), reservationDTO.getRoomName());
+        for (Reservation reservation : reservations) {
+            if (reservation.isDuplicate(reservationDTO.getStartTime(), reservationDTO.getEndTime())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<LocalDate> getReservationDateList(ReservationDTO reservationDTO) {
         List<LocalDate> dateList = new ArrayList<>();
         for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
             dateList.add(reservationDTO.getDate().plusWeeks(i));
         }
-
-        List<Reservation> reservations = reservationRepository.findByDateInAndRoomName(dateList, reservationDTO.getRoomName());
-
-        for (Reservation reservation : reservations) {
-            if (reservation.isDuplicate(reservationDTO.getStartTime(), reservationDTO.getEndTime())) {
-                throw new ReservationDuplicateException(msa.getMessage("reservation.duplicate.message"));
-            }
-        }
+        return dateList;
     }
 
     public List<Reservation> convertToReservationList(ReservationDTO reservationDTO) {
@@ -52,7 +56,12 @@ public class ReservationService {
         return reservationList;
     }
 
-    public List<ReservationResponseDTO> getReservationDTOsByDate(LocalDate date) {
+    @Transactional
+    public void saveReservationList(List<Reservation> reservationList) {
+        reservationRepository.saveAll(reservationList);
+    }
+
+    public List<ReservationResponseDTO> getReservationListByDate(LocalDate date) {
         List<Reservation> reservationList = reservationRepository.findByDate(date);
         return convertToReservationDTOList(reservationList);
     }
