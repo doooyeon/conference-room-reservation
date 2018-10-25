@@ -26,32 +26,42 @@ public class ReservationService {
     @Transactional
     synchronized public void save(ReservationDTO reservationDTO) {
         checkDuplicate(reservationDTO);
-
-        for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
-            reservationDTO.setDate(reservationDTO.getDate().plusWeeks(i));
-            reservationRepository.save(reservationDTO.toEntity());
-        }
+        reservationRepository.saveAll(convertToReservationList(reservationDTO));
     }
 
     public void checkDuplicate(ReservationDTO reservationDTO) {
+        List<LocalDate> dateList = new ArrayList<>();
         for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
-            ReservationDTO dto = new ReservationDTO(reservationDTO.getRoomName(), reservationDTO.getReservedName(), reservationDTO.getDate().plusWeeks(i), reservationDTO.getStartTime(), reservationDTO.getEndTime(), reservationDTO.getNumOfRecursion());
-            List<Reservation> reservations = reservationRepository.findByDateAndRoomName(reservationDTO.getDate(), reservationDTO.getRoomName());
+            dateList.add(reservationDTO.getDate().plusWeeks(i));
+        }
 
-            for (Reservation reservation : reservations) {
-                if (reservation.isDuplicate(dto)) {
-                    throw new ReservationDuplicateException(msa.getMessage("reservation.duplicate.message"));
-                }
+        List<Reservation> reservations = reservationRepository.findByDateInAndRoomName(dateList, reservationDTO.getRoomName());
+
+        for (Reservation reservation : reservations) {
+            if (reservation.isDuplicate(reservationDTO.getStartTime(), reservationDTO.getEndTime())) {
+                throw new ReservationDuplicateException(msa.getMessage("reservation.duplicate.message"));
             }
         }
     }
 
-    public List<ReservationResponseDTO> getReservationDTOsByDate(LocalDate date) {
-        List<Reservation> reservations = reservationRepository.findByDate(date);
-        List<ReservationResponseDTO> reservationDTOs = new ArrayList<>();
-        for (Reservation r : reservations) {
-            reservationDTOs.add(new ReservationResponseDTO(r.getId(), r.getRoomName(), r.getReservedName(), r.getStartTime(), r.getEndTime()));
+    public List<Reservation> convertToReservationList(ReservationDTO reservationDTO) {
+        List<Reservation> reservationList = new ArrayList<>();
+        for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
+            reservationList.add(reservationDTO.toEntity(reservationDTO.getDate().plusWeeks(i)));
         }
-        return reservationDTOs;
+        return reservationList;
+    }
+
+    public List<ReservationResponseDTO> getReservationDTOsByDate(LocalDate date) {
+        List<Reservation> reservationList = reservationRepository.findByDate(date);
+        return convertToReservationDTOList(reservationList);
+    }
+
+    public List<ReservationResponseDTO> convertToReservationDTOList(List<Reservation> reservations) {
+        List<ReservationResponseDTO> reservationDTOList = new ArrayList<>();
+        for (Reservation r : reservations) {
+            reservationDTOList.add(new ReservationResponseDTO(r.getId(), r.getRoomName(), r.getReservedName(), r.getStartTime(), r.getEndTime()));
+        }
+        return reservationDTOList;
     }
 }

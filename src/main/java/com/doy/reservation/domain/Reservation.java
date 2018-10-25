@@ -44,10 +44,10 @@ public class Reservation {
         this(roomName, "doy", date, startTime, endTime);
     }
 
-    public boolean isDuplicate(ReservationDTO reservationDTO) {
-        if (startTime.isAfter(reservationDTO.getEndTime()) || startTime.compareTo(reservationDTO.getEndTime()) == 0)
+    public boolean isDuplicate(LocalTime startTime, LocalTime endTime) {
+        if (this.startTime.isAfter(endTime) || this.startTime.compareTo(endTime) == 0)
             return false;
-        if (endTime.isBefore(reservationDTO.getStartTime()) || endTime.compareTo(reservationDTO.getStartTime()) == 0)
+        if (this.endTime.isBefore(startTime) || this.endTime.compareTo(startTime) == 0)
             return false;
         return true;
     }

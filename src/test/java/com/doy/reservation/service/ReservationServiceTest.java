@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.context.support.MessageSourceAccessor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,18 +36,23 @@ public class ReservationServiceTest {
         ReservationDTO reservationDTO = ReservationDTO.defaultReservationBDto();
         reservationService.save(reservationDTO);
 
-        Reservation reservation = reservationDTO.toEntity();
-        verify(reservationRepository).save(reservation);
+        List<Reservation> reservationList = reservationService.convertToReservationList(reservationDTO);
+        verify(reservationRepository).saveAll(reservationList);
     }
 
 
     @Test(expected = ReservationDuplicateException.class)
     public void saveReservationFailTest() {
         ReservationDTO reservationDTO = ReservationDTO.defaultReservationADto();
+        List<LocalDate> dateList = new ArrayList<>();
+        for (int i = 0; i < reservationDTO.getNumOfRecursion(); i++) {
+            dateList.add(reservationDTO.getDate().plusWeeks(i));
+        }
+
         List<Reservation> reservations = new ArrayList<>();
         reservations.add(reservationDTO.toEntity());
 
-        when(reservationRepository.findByDateAndRoomName(reservationDTO.getDate(), reservationDTO.getRoomName())).thenReturn(reservations);
+        when(reservationRepository.findByDateInAndRoomName(dateList, reservationDTO.getRoomName())).thenReturn(reservations);
         reservationService.save(reservationDTO);
     }
 

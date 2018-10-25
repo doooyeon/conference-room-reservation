@@ -55,6 +55,10 @@ public class ReservationDTO {
         return new Reservation(roomName, reservedName, date, startTime, endTime);
     }
 
+    public Reservation toEntity(LocalDate date) {
+        return new Reservation(roomName, reservedName, date, startTime, endTime);
+    }
+
     public static ReservationDTO defaultReservationADto() {
         return new ReservationDTO("A", "doy", LocalDate.now(), LocalTime.of(10, 30), LocalTime.of(12, 0), 1);
     }
