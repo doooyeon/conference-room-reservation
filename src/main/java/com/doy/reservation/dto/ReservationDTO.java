@@ -47,14 +47,6 @@ public class ReservationDTO {
         this.numOfRecursion = 1;
     }
 
-    public ReservationDTO(String roomName, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this(roomName, "doy", date, startTime, endTime);
-    }
-
-    public Reservation toEntity() {
-        return new Reservation(roomName, reservedName, date, startTime, endTime);
-    }
-
     public Reservation toEntity(LocalDate date) {
         return new Reservation(roomName, reservedName, date, startTime, endTime);
     }

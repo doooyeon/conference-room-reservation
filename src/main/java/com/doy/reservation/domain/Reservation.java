@@ -1,35 +1,35 @@
 package com.doy.reservation.domain;
 
-import com.doy.reservation.dto.ReservationDTO;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
 
 @Entity
 @Getter
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String roomName;
 
-    @Column
+    @Column(nullable = false)
     private String reservedName;
 
-    @Column
+    @Column(nullable = false)
     private LocalDate date;
 
-    @Column
+    @Column(nullable = false)
     private LocalTime startTime;
 
-    @Column
+    @Column(nullable = false)
     private LocalTime endTime;
 
     public Reservation(String roomName, String reservedName, LocalDate date, LocalTime startTime, LocalTime endTime) {
@@ -40,28 +40,11 @@ public class Reservation {
         this.endTime = endTime;
     }
 
-    public Reservation(String roomName, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        this(roomName, "doy", date, startTime, endTime);
-    }
-
     public boolean isDuplicate(LocalTime startTime, LocalTime endTime) {
         if (this.startTime.isAfter(endTime) || this.startTime.compareTo(endTime) == 0)
             return false;
         if (this.endTime.isBefore(startTime) || this.endTime.compareTo(startTime) == 0)
             return false;
         return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Reservation that = (Reservation) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(roomName, that.roomName) &&
-                Objects.equals(reservedName, that.reservedName) &&
-                Objects.equals(date, that.date) &&
-                Objects.equals(startTime, that.startTime) &&
-                Objects.equals(endTime, that.endTime);
     }
 }
