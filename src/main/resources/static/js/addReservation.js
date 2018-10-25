@@ -63,8 +63,8 @@ function addReservation() {
     $('#time-validation').html('');
 
     let numOfRecursion = 1;
-    if ($('input:checkbox[id="recursion-check"]').is(":checked")) {
-        numOfRecursion = $('#num-of-recursion').val();
+    if ($('input:checkbox[id="recursion-checkbox"]').is(":checked")) {
+        numOfRecursion = parseInt($('#num-of-recursion').val());
     }
 
     fetchManager({
