@@ -62,7 +62,16 @@ function viewReserveSuccessCallback(reservations) {
     });
 }
 
-function viewReserveFailCallback() {
+function viewReserveFailCallback(response) {
+    $('.caution').hide();
+    const status = response.status;
+    response.json().then((response) => {
+        if (status === 400) {
+            // 입력 유효성 오류
+            $('#date-validation').html(response.errorMessage);
+            $('#date-validation').show();
+        }
+    });
 }
 
 function updateView() {

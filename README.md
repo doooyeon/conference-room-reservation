@@ -40,14 +40,15 @@
     - Request
         - **POST /reservations**
     - Response
-        - OK : 예약 성공
-        - BAD_REQUEST : 입력 오류
-        - FORBIDDEN : 예약 중복
+        - 201 CREATED : 예약 성공
+        - 400 BAD_REQUEST : 입력 오류
+        - 403 FORBIDDEN : 예약 중복
 - **예약조회**
     - Request
         - **GET /reservations/{date}**    
     - Response
-        - OK : 해당 날짜 예약 조회 성공
+        - 200 OK : 해당 날짜 예약 조회 성공
+        - 400 BAD_REQUEST : 입력 오류
 
 ---
 
